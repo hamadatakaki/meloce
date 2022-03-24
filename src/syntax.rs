@@ -3,7 +3,7 @@ pub type Identify = String;
 pub enum BinOp {
     Plus,
     Mult,
-    Lt
+    Lt,
 }
 
 pub enum Exp {
@@ -15,7 +15,7 @@ pub enum Exp {
 }
 
 pub enum Program {
-    Exp(Exp)
+    Exp(Exp),
 }
 
 pub type Tyvar = i64;
@@ -24,5 +24,5 @@ pub enum Ty {
     TyBool,
     TyVar(Tyvar),
     TyFun(Box<Ty>, Box<Ty>),
-    TyList(Box<Ty>)
+    TyList(Box<Ty>),
 }
