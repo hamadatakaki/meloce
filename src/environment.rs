@@ -1,3 +1,5 @@
+use crate::eval::ExpressedValue;
+
 pub struct NotBoundError;
 
 #[derive(Clone)]
@@ -48,9 +50,11 @@ impl<T: Clone> Environment<T> {
     }
 }
 
+pub type ExpEnvironment = Environment<ExpressedValue>;
+
 #[test]
 fn test_initialize_environment() {
-    use crate::eval::{apply_prim, ExpressedValue};
+    use crate::eval::apply_prim;
     use crate::syntax::BinOp;
 
     let mut env = Environment::empty();

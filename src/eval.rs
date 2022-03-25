@@ -1,7 +1,7 @@
 use std::fmt;
 
 use crate::{
-    environment::Environment,
+    environment::ExpEnvironment,
     syntax::{Exp, Program},
 };
 
@@ -93,13 +93,11 @@ pub fn apply_prim(
     }
 }
 
-type ExpEnvironment = Environment<ExpressedValue>;
-
-pub struct EvalExp {
+pub struct Evaluator {
     env: ExpEnvironment,
 }
 
-impl EvalExp {
+impl Evaluator {
     pub fn new(env: ExpEnvironment) -> Self {
         Self { env }
     }
