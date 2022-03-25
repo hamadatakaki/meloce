@@ -1,6 +1,6 @@
 use crate::{
     environment::ExpEnvironment,
-    eval::{EvalError, Evaluator},
+    eval::Evaluator,
     syntax::{BinOp, Exp, Program},
 };
 
@@ -17,7 +17,7 @@ pub fn read_eval_print(env: ExpEnvironment) {
         Box::new(Exp::ILit(19)),
     ));
 
-    print!("parsing done\n");
+    println!("parsing done");
 
     let evaluator = Evaluator::new(env);
 

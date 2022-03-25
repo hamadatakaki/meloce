@@ -15,10 +15,7 @@ pub enum ExpressedValue {
 
 impl ExpressedValue {
     pub fn is_int(self) -> bool {
-        match self {
-            ExpressedValue::IntValue(_) => true,
-            _ => false,
-        }
+        matches!(self, ExpressedValue::IntValue(_))
     }
 
     pub fn to_int(self) -> Result<i64, EvalError> {
@@ -29,10 +26,7 @@ impl ExpressedValue {
     }
 
     pub fn is_bool(self) -> bool {
-        match self {
-            ExpressedValue::BoolValue(_) => true,
-            _ => false,
-        }
+        matches!(self, ExpressedValue::BoolValue(_))
     }
 
     pub fn to_bool(self) -> Result<bool, EvalError> {
