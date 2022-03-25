@@ -1,5 +1,10 @@
 use std::fmt;
 
+use crate::{
+    environment::Environment,
+    syntax::{Exp, Program},
+};
+
 use super::syntax;
 
 #[derive(Clone, Copy)]
@@ -88,5 +93,52 @@ pub fn apply_prim(
     }
 }
 
-// TODO: syntax::Exp をもらって、ExpressedValueを返す関数がimplされたstructをつくる
-// pub struct EvalExp { env: Environment }
+type ExpEnvironment = Environment<ExpressedValue>;
+
+pub struct EvalExp {
+    env: ExpEnvironment,
+}
+
+impl EvalExp {
+    pub fn new(env: ExpEnvironment) -> Self {
+        Self { env }
+    }
+
+    pub fn eval_exp(&self, exp: Exp) -> Result<ExpressedValue, EvalError> {
+        match exp {
+            Exp::Var(x) => match self.env.lookup(&x) {
+                Ok(&v) => Ok(v),
+                Err(_) => Err(format!("Variable not bound: {}", x)),
+            },
+            Exp::ILit(i) => Ok(ExpressedValue::IntValue(i)),
+            Exp::BLit(b) => Ok(ExpressedValue::BoolValue(b)),
+            Exp::BinOp(op, exp1, exp2) => {
+                let arg1 = self.eval_exp(*exp1)?;
+                let arg2 = self.eval_exp(*exp2)?;
+                apply_prim(op, arg1, arg2)
+            }
+            Exp::IfExp(exp1, exp2, exp3) => match self.eval_exp(*exp1)? {
+                ExpressedValue::BoolValue(b) => {
+                    if b {
+                        self.eval_exp(*exp2)
+                    } else {
+                        self.eval_exp(*exp3)
+                    }
+                }
+                _ => Err(String::from("Test expression must be boolean: if")),
+            },
+        }
+    }
+
+    pub fn eval_decl(
+        &self,
+        prog: Program,
+    ) -> Result<(String, ExpEnvironment, ExpressedValue), EvalError> {
+        match prog {
+            Program::Exp(e) => {
+                let v = self.eval_exp(e)?;
+                Ok((String::from("-"), self.env.clone(), v))
+            }
+        }
+    }
+}

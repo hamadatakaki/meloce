@@ -1,5 +1,6 @@
 pub struct NotBoundError;
 
+#[derive(Clone)]
 pub struct Environment<T: Clone> {
     records: Vec<(String, T)>,
 }
