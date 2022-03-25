@@ -2,6 +2,7 @@ use std::fmt;
 
 use super::syntax;
 
+#[derive(Clone, Copy)]
 pub enum ExpressedValue {
     IntValue(i64),
     BoolValue(bool),
